@@ -1,4 +1,4 @@
-from modlist import modlist, insertion
+from modlist import modlist, insertion, relocation
 
 master_list = [1, 2, 3]
 
@@ -16,3 +16,14 @@ def test_insert():
         insertion(2.5, after=2),
         insertion(1.5, before=2)
     ]) == [1, 1.5, 2, 2.5, 3]
+
+
+def test_remove():
+    assert modlist(master_list, remove=[2]) == [1, 3]
+
+
+def test_move():
+    assert modlist(master_list, move=[
+        relocation(2, after=3),
+        relocation(3, before=1)
+    ]) == [3, 1, 2]
