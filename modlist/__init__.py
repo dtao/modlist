@@ -11,27 +11,27 @@ def modlist(lst, **kwargs):
     if 'append' in kwargs:
         output = output + kwargs['append']
 
+    def remove(value):
+        index = output.index(value)
+        output.pop(index)
+
+    def insert(value, location):
+        if location.after:
+            after_index = output.index(location.after)
+            output.insert(after_index + 1, value)
+        elif location.before:
+            before_index = output.index(location.before)
+            output.insert(before_index, value)
+
     for insertion in kwargs.get('insert', []):
-        if insertion.after:
-            after_index = output.index(insertion.after)
-            output.insert(after_index + 1, insertion.value)
-        elif insertion.before:
-            before_index = output.index(insertion.before)
-            output.insert(before_index, insertion.value)
+        insert(insertion.value, insertion)
 
     for removal in kwargs.get('remove', []):
-        index = output.index(removal)
-        output.pop(index)
+        remove(removal)
 
     for relocation in kwargs.get('move', []):
-        index = output.index(relocation.value)
-        output.pop(index)
-        if relocation.after:
-            after_index = output.index(relocation.after)
-            output.insert(after_index + 1, relocation.value)
-        elif relocation.before:
-            before_index = output.index(relocation.before)
-            output.insert(before_index, relocation.value)
+        remove(relocation.value)
+        insert(relocation.value, relocation)
 
     if isinstance(lst, tuple):
         output = tuple(output)
