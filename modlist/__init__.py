@@ -16,44 +16,24 @@ def modlist(lst, **kwargs):
         output.pop(index)
 
     def insert(value, location):
-        if location.after:
-            after_index = output.index(location.after)
+        if location.get('after'):
+            after_index = output.index(location['after'])
             output.insert(after_index + 1, value)
-        elif location.before:
-            before_index = output.index(location.before)
+        elif location.get('before'):
+            before_index = output.index(location['before'])
             output.insert(before_index, value)
 
-    for insertion in kwargs.get('insert', []):
-        insert(insertion.value, insertion)
+    for value, location in kwargs.get('insert', []):
+        insert(value, location)
 
     for removal in kwargs.get('remove', []):
         remove(removal)
 
-    for relocation in kwargs.get('move', []):
-        remove(relocation.value)
-        insert(relocation.value, relocation)
+    for value, location in kwargs.get('move', []):
+        remove(value)
+        insert(value, location)
 
     if isinstance(lst, tuple):
         output = tuple(output)
 
     return output
-
-
-class insertion(object):
-    """Class representing insertion into a list."""
-
-    def __init__(self, value, after=None, before=None):
-        """Define an insertion after and/or before a given value."""
-        self.value = value
-        self.after = after
-        self.before = before
-
-
-class relocation(object):
-    """Class representing relocation of an item in a list."""
-
-    def __init__(self, value, after=None, before=None):
-        """Define a relocation of a given value relative to another value."""
-        self.value = value
-        self.after = after
-        self.before = before
