@@ -27,3 +27,9 @@ def test_move():
         relocation(2, after=3),
         relocation(3, before=1)
     ]) == [3, 1, 2]
+
+
+def test_tuple():
+    assert modlist(tuple(master_list), move=[
+        relocation(3, before=1)
+    ]) == (3, 1, 2)

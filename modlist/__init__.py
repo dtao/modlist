@@ -3,7 +3,7 @@
 
 def modlist(lst, **kwargs):
     """Perform a series of operations on a list."""
-    output = lst[:]
+    output = list(lst)
 
     if 'prepend' in kwargs:
         output = kwargs['prepend'] + output
@@ -32,6 +32,9 @@ def modlist(lst, **kwargs):
         elif relocation.before:
             before_index = output.index(relocation.before)
             output.insert(before_index, relocation.value)
+
+    if isinstance(lst, tuple):
+        output = tuple(output)
 
     return output
 
